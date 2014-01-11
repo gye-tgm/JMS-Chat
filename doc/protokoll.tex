@@ -1,0 +1,62 @@
+\documentclass[11pt, a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{listings}             % Include the listings-package for c++,java,idl
+% \usepackage[ngerman]{babel}
+
+\title{JMS-Chat}
+\author{Elias Frantar, Gary Ye (4BHIT)}
+\date{\today{}, Wien}
+\begin{document}
+
+% Pretty Code formatting
+\lstset{basicstyle=\ttfamily\small,
+        keywordstyle=,
+        commentstyle=\itshape,
+        numbers=left,                   % where to put the line-numbers
+        stepnumber=1,					% line number incrementing
+        linebreak=true,					% line wrapping on
+        numberstyle=\tiny,				% line number style	
+        showstringspaces=false,			
+        abovecaptionskip=0pt,
+        belowcaptionskip=0pt,
+        xleftmargin=\parindent,
+        fontadjust}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section{Aufgabenstellung}
+
+\section{Aufwandsschätzung}
+Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt und entfällt daher.
+
+Task Elias Frantar Gary Ye
+Implementierung des Chatraums (JMS Topic) 3h
+Implementierung der Postfach-Funktionalität (JMS Queue) 3h
+Dokumentation 3h
+Testing 2h
+\section{Installation}
+
+\begin{enumerate}
+\item Herunterladen der Installationsdateien[1].
+\item Entpacken der Installationsdateien mit unzip
+\item Ändern der Rechte von bin/activemq mit chmod u+x, damit die Datei ausführbar wird.
+\end{itemize}
+
+
+\section{Aufgetretene Probleme}
+\subsection{Installation}
+Für das Debian-Image muss eine Änderung durchgeführt werden, damit Apache Active MQ gestartet werden kann.
+> Öffnen Sie die Datei bin/activemq mit einem Editor Ihrer Wahl 
+> Suchen Sie nach folgender Zeile
+       ACTIVEMQ_OPTS_MEMORY="-Xms1G -Xmx1G"
+> Ersetzen Sie diese Zeile mit:
+       ACTIVEMQ_OPTS_MEMORY="-Xms512M -Xmx512M"
+\section{Testing}
+
+
+
+\end{document}
