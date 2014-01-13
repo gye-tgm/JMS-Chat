@@ -15,6 +15,11 @@ import org.apache.activemq.ActiveMQConnectionFactory;
  * @version 13.1.14
  */
 public class JMSMail {
+	/**
+	 * The error to print when catching JMSExceptions thrown by this class.
+	 */
+	public static final String JMS_ERROR = "A JMS error occured!: "; // the error to print when catching Exceptions
+	
 	private String url; // URL to the server
 	private String mailbox; // name of you own mailbox
 	
