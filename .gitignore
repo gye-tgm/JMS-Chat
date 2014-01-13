@@ -11,7 +11,11 @@ classes/
 .classpath
 .project
 *.ucls
-
+# Astah Files 
 *.asta
 
+# LaTeX Files
+*.aux
+*.log
+*.toc
 *.pdf
