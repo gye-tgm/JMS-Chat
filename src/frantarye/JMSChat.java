@@ -95,7 +95,7 @@ public class JMSChat extends Thread {
 		destination = session.createTopic(subject);
 		
 		producer = session.createProducer(destination);
-		producer.setDeliveryMode( DeliveryMode.NON_PERSISTENT );
+		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 		
 		consumer = session.createConsumer(destination);
 		

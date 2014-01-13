@@ -3,27 +3,18 @@ package frantarye;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.DeliveryMode;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Queue;
-import javax.jms.QueueBrowser;
-import javax.jms.QueueSender;
-import javax.jms.QueueSession;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.command.Message;
+import javax.jms.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 public class JMSMail {
 	private String url;
 	private String mailbox;
 	
-	private Connection connection;
-	private Session session;
+	Context jndiContext;
+	private QueueConnection connection;
+	private QueueSession session;
 	private Queue queue;
 	private QueueBrowser browser;
 	private QueueSender sender;
@@ -33,8 +24,12 @@ public class JMSMail {
 		this.mailbox = mailbox;
 	}
 	
-	public void sendMail(String mailbox, String message) {
+	public void sendMail(String mailbox, String message) throws NamingException, JMSException {
+		queue = (Queue)jndiContext.lookup(url + "/" + mailbox);
+		sender = session.createSender(queue);
 		
+		TextMessage msg = session.createTextMessage(message);
+		sender.send(msg);
 	}
 	
 	public ArrayList<String> retrieveMails() throws JMSException {
@@ -55,18 +50,18 @@ public class JMSMail {
 	/**
 	 * Connects this participant to the in 'subject' specified chatroom.
 	 * @throws JMSException JMSException thrown if a JMSException occurred
+	 * @throws NamingException 
 	 */
-	public void connect() throws JMSException {
-		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
-		connection = connectionFactory.createConnection();
-		connection.start();
+	public void connect() throws JMSException, NamingException {
+		Context jndiContext = new InitialContext();
+		QueueConnectionFactory factory = (QueueConnectionFactory)jndiContext.lookup(url + "/QueueConnectionFactory");
 		
-		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		queue = session.createQueue(mailbox);
+		queue = (Queue)jndiContext.lookup(url + "/" + mailbox);
 		
-		browser = session.createBrowser(queue);
+		connection = factory.createQueueConnection();
+		session =  connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
 		
-		
+		browser = session.createBrowser(queue);	
 	}
 	/**
 	 * Disconnects this participant from the in 'subject' specified chatroom. Automatically stops receiving messages.
