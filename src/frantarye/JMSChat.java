@@ -41,6 +41,7 @@ public class JMSChat extends Thread {
 	 */
 	public JMSChat(String subject, String url) {
 		this.subject = subject;
+		this.url = url;
 		connected = false;
 	}
 	
@@ -99,6 +100,7 @@ public class JMSChat extends Thread {
 		consumer = session.createConsumer(destination);
 		
 		connected = true;
+		System.out.println("Welcome to the chat in room: " + subject);
 	}
 	/**
 	 * Disconnects this participant from the in 'subject' specified chatroom. Automatically stops receiving messages.
