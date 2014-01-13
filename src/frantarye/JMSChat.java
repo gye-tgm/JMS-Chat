@@ -1,10 +1,11 @@
 package frantarye;
 
 public class JMSChat extends Thread {
-	public String subject;
+	private String url;
+	private String subject;
 	
-	public JMSChat(String subject) {
-		
+	public JMSChat(String subject, String url) {
+		this.subject = subject;
 	}
 	
 	@Override

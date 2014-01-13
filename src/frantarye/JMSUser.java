@@ -3,8 +3,6 @@ package frantarye;
 import org.apache.activemq.ActiveMQConnection;
 
 public class JMSUser extends Thread {
-	public static String URL = "";
-	
 	private JMSChat chat;
 	private JMSMail mail;
 	
