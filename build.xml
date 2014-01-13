@@ -36,7 +36,7 @@
   <!-- Run-Sender -->
   <target name="run-sender" depends="compile" description="Runs a simple sender">
 	<echo>Running sender.</echo>
-	<java classname="JMSChatSender" fork="yes" maxmemory="100M">
+	<java classname="frantarye.JMSChatSender" fork="yes" maxmemory="100M">
 		<classpath refid="javac.classpath" />
 	</java>
   </target>
@@ -44,7 +44,7 @@
   <!-- Run-Receiver -->
   <target name="run-receiver" depends="compile" description="Runs a simple receiver.">
 	<echo>Running receiver.</echo>
-	<java classname="JMSChatReceiver" fork="yes" maxmemory="100M">
+	<java classname="frantarye.JMSChatReceiver" fork="yes" maxmemory="100M">
 		<classpath refid="javac.classpath" />
 	</java>
   </target>
