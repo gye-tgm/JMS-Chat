@@ -1,4 +1,6 @@
-package FrantarYe;
+package frantarye;
+
+import java.net.Inet4Address;
 
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
@@ -15,7 +17,7 @@ public class JMSChatSender {
 
   private static String user = ActiveMQConnection.DEFAULT_USER;
   private static String password = ActiveMQConnection.DEFAULT_PASSWORD;
-  private static String url = ActiveMQConnection.DEFAULT_BROKER_URL;
+  private static String url = "failover://tcp://10.0.104.41:61616";
   private static String subject = "VSDBChat";
 	
   public static void main( String[] args ) {
@@ -27,11 +29,12 @@ public class JMSChatSender {
 	  Destination destination = null;
 			
 	  try {
-	    	
+		  	System.out.println(Inet4Address.getLocalHost().getHostAddress());
+		  
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory( user, password, url );
 			connection = connectionFactory.createConnection();
 			connection.start();
-		
+			
 			// Create the session
 			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 			destination = session.createTopic( subject );
