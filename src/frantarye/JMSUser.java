@@ -2,6 +2,11 @@ package frantarye;
 
 import org.apache.activemq.ActiveMQConnection;
 
+/**
+ * @author Gary Ye
+ * @version 13.01.2013
+ * Objects of this 
+ */
 public class JMSUser extends Thread {
 	private JMSChat chat;
 	private JMSMail mail;
