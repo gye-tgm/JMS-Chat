@@ -1,11 +1,26 @@
 package frantarye;
 
-public class JMSUser {
-	private JMSSender sender;
-	private JMSReceiver receiver;
+import org.apache.activemq.ActiveMQConnection;
+
+public class JMSUser extends Thread {
+	public static String URL = "";
 	
 	private JMSChat chat;
 	private JMSMail mail;
 	
 	private String ip;
+	private String username;
+	
+	public JMSUser(String ip_message_broker, String username, String subject) {
+		
+	}
+	
+	@Override
+	public void run() {
+		
+	}
+	
+	public static void main(String[] args) {
+		
+	}
 }
