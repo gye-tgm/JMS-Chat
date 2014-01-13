@@ -7,8 +7,11 @@
 
 # Eclipse #
 bin/
+classes/
 .classpath
 .project
 *.ucls
+
+*.asta
 
 *.pdf
