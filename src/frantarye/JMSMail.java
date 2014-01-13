@@ -8,16 +8,18 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.apache.activemq.ActiveMQConnectionFactory;
+
 public class JMSMail {
 	private String url;
 	private String mailbox;
 	
 	Context jndiContext;
-	private QueueConnection connection;
-	private QueueSession session;
+	private Connection connection;
+	private Session session;
 	private Queue queue;
 	private QueueBrowser browser;
-	private QueueSender sender;
+	private MessageProducer producer;
 	
 	public JMSMail(String mailbox, String url) {
 		this.url = url;
@@ -25,11 +27,13 @@ public class JMSMail {
 	}
 	
 	public void sendMail(String mailbox, String message) throws NamingException, JMSException {
-		queue = (Queue)jndiContext.lookup(url + "/" + mailbox);
-		sender = session.createSender(queue);
+		Queue queue_to_send = session.createQueue(mailbox);
+		
+		producer = session.createProducer(queue_to_send);
+		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 		
 		TextMessage msg = session.createTextMessage(message);
-		sender.send(msg);
+		producer.send(msg);
 	}
 	
 	public ArrayList<String> retrieveMails() throws JMSException {
@@ -53,15 +57,15 @@ public class JMSMail {
 	 * @throws NamingException 
 	 */
 	public void connect() throws JMSException, NamingException {
-		Context jndiContext = new InitialContext();
-		QueueConnectionFactory factory = (QueueConnectionFactory)jndiContext.lookup(url + "/QueueConnectionFactory");
+		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
+		connection = connectionFactory.createConnection();
+		connection.start();
 		
-		queue = (Queue)jndiContext.lookup(url + "/" + mailbox);
+		// Create the session
+		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		queue = session.createQueue(mailbox);
 		
-		connection = factory.createQueueConnection();
-		session =  connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-		
-		browser = session.createBrowser(queue);	
+		browser = session.createBrowser(queue);
 	}
 	/**
 	 * Disconnects this participant from the in 'subject' specified chatroom. Automatically stops receiving messages.

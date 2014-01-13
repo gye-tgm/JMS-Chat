@@ -63,6 +63,14 @@ public class JMSUser extends Thread {
 		String inputLine;
 		
 		try {
+			mail.connect();
+		} catch (JMSException e3) {
+			e3.printStackTrace();
+		} catch (NamingException e3) {
+			e3.printStackTrace();
+		}
+		
+		try {
 			chat.connect();
 		} catch (JMSException e1) {
 			e1.printStackTrace();
@@ -80,9 +88,14 @@ public class JMSUser extends Thread {
 					break;
 				case MAIL_SEND:
 					String[] split = inputLine.split(" ");
+					StringBuffer msg = new StringBuffer("");
+					for(int i = 2; i < split.length; i++) {
+						if(i > 2) msg.append(' ');
+						msg.append(split[i]);
+					}
 					// MAIL mailbox, message is the rest of the line
 					try {
-						mail.sendMail(split[1],Arrays.copyOfRange(split, 2, split.length).toString());
+						mail.sendMail(split[1], msg.toString());
 					} catch (NamingException | JMSException e2) {
 						e2.printStackTrace();
 					}
