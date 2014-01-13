@@ -8,8 +8,6 @@ import org.apache.activemq.ActiveMQConnection;
  * Objects of this 
  */
 public class JMSUser extends Thread {
-	public static String URL = "";
-	
 	private JMSChat chat;
 	private JMSMail mail;
 	
