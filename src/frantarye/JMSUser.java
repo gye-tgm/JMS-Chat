@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.jms.JMSException;
+import javax.naming.NamingException;
 
 /**
  * @author Gary Ye
@@ -80,9 +81,11 @@ public class JMSUser extends Thread {
 				case MAIL_SEND:
 					String[] split = inputLine.split(" ");
 					// MAIL mailbox, message is the rest of the line
-					mail.sendMail(split[1],
-							Arrays.copyOfRange(split, 2, split.length)
-									.toString());
+					try {
+						mail.sendMail(split[1],Arrays.copyOfRange(split, 2, split.length).toString());
+					} catch (NamingException | JMSException e2) {
+						e2.printStackTrace();
+					}
 					break;
 				case MAILBOX:
 					ArrayList<String> mails = null;
