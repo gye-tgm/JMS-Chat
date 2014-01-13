@@ -34,20 +34,13 @@
   </target>
 
   <!-- Run-Sender -->
-  <target name="run-sender" depends="compile" description="Runs a simple sender">
-	<echo>Running sender.</echo>
-	<java classname="frantarye.JMSChatSender" fork="yes" maxmemory="100M">
+  <target name="run-chat" depends="compile" description="Runs the chat application">
+	<echo>Running the chat application.</echo>
+	<java classname="frantarye.JMSUser" fork="yes" maxmemory="100M">
 		<classpath refid="javac.classpath" />
+		<arg value="${ip}"/>
+		<arg value="${user}"/>
+		<arg value="${chatroom}"/>
 	</java>
   </target>
-
-  <!-- Run-Receiver -->
-  <target name="run-receiver" depends="compile" description="Runs a simple receiver.">
-	<echo>Running receiver.</echo>
-	<java classname="frantarye.JMSChatReceiver" fork="yes" maxmemory="100M">
-		<classpath refid="javac.classpath" />
-	</java>
-  </target>
-
-
 </project>

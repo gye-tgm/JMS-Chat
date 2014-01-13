@@ -37,18 +37,19 @@ public class JMSUser extends Thread {
 	public JMSUser(String ip_message_broker, String username, String subject) {
 		// Own attributes
 		this.username = username;
-		// Chat message
-		String url = String.format("tcp://%s:61616", ip_message_broker);
-		chat = new JMSChat(subject, url);
-
-		// Mail Box
 		try {
-			mail = new JMSMail(Inet4Address.getLocalHost().getHostAddress(),
-					url);
+			ip = Inet4Address.getLocalHost().getHostAddress();	
 		} catch (UnknownHostException e) {
 			System.err.println("The localhost is unknown.");
 			System.exit(1);
 		}
+		
+		// Chat message
+		String url = String.format("tcp://%s:61616", ip_message_broker);
+		System.out.println(url);
+		chat = new JMSChat(subject, url);
+		// Mail Box
+		mail = new JMSMail(ip, url);
 	}
 
 	/**
@@ -59,8 +60,14 @@ public class JMSUser extends Thread {
 	public void run() {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		String inputLine;
-
-		chat.run(); // Start listening
+		
+		try {
+			chat.connect();
+		} catch (JMSException e1) {
+			e1.printStackTrace();
+		}
+		
+		chat.startReceiving(); // Start listening
 
 		try {
 			while ((inputLine = in.readLine()) != null) {
@@ -98,8 +105,7 @@ public class JMSUser extends Thread {
 
 	public static void main(String[] args) {
 		if (args.length != 3) {
-			System.err
-					.println("usage: vsdbchat <ip_message_broker> <username> <chatroom>");
+			System.err.println("usage: vsdbchat <ip_message_broker> <username> <chatroom>");
 		} else {
 			new JMSUser(args[0], args[1], args[2]).start();
 		}
