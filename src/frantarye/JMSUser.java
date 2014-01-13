@@ -85,7 +85,12 @@ public class JMSUser extends Thread {
 									.toString());
 					break;
 				case MAILBOX:
-					ArrayList<String> mails = mail.retrieveMails();
+					ArrayList<String> mails = null;
+					try {
+						mails = mail.retrieveMails();
+					} catch (JMSException e1) {
+						e1.printStackTrace();
+					}
 					for (String m : mails)
 						System.out.println(m);
 					break;
