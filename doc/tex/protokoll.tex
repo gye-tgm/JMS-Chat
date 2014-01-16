@@ -15,7 +15,7 @@
         commentstyle=\itshape,
         numbers=left,                   % where to put the line-numbers
         stepnumber=1,					% line number incrementing
-        linebreak=true,					% line wrapping on
+        breaklines=true,					% line wrapping on
         numberstyle=\tiny,				% line number style	
         showstringspaces=false,			
         abovecaptionskip=0pt,
@@ -33,47 +33,58 @@
 \section{Aufwandsschätzung}
 Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt und entfällt daher.
 
-Bekanntmachung mit JMS 1.5h
-Planung 1.5h
+\begin{description}
+\item[Alle Teammitglieder] \hfill \\
 
-Frantar
-Implementierung JMSChat 1.5h 0.75h
-Implementierung JMSMail 1.5h 
+  \begin{tabular} {| l | l |}
+    \hline
+    Task & Tatsächlich \\ \hline
+    Bekanntmachung mit JMS & 1.5h \\ \hline
+    Planung & 1.5h \\ \hline
+    \hline
+    Gesamt & 3h \\ \hline
+  \end{tabular}
 
-Ye Schätzung Aufwand
-Impl SyntaxChecker 0.75h 0.25h
-SyntaxCheckerTest 0.5h 
-Impl User 2h 0.5h
+\item[Frantar] \hfill \\
 
-Testing 0.5
+  \begin{tabular} {| l | l | l |}
+    \hline
+    Task & Schätzung & Tatsächlich \\ \hline
+    Implementierung JMSChat & 1.5h & 0.75h \\ \hline
+    Implementierung JMSMail & 1.5h & 1.5h \\ \hline
+    \hline
+    Gesamt & 3h & 2.75h \\ \hline
+  \end{tabular}
 
-Gesamttesting 1.5
+\item[Ye] \hfill \\
 
-Task Elias Frantar Gary Ye
+    \begin{tabular} {| l | l | l |}
+      \hline
+      Task & Schätzung & Aufwand \\ \hline
+      SyntaxChecker Implementierung & 0.75h & 0.25h \\ \hline
+      SyntaxChecker Test & 0.5h & 0.5h \\ \hline
+      JMS-User Implementierung & 2h & 0.5h \\ \hline
+      \hline
+      Gesamt & 3.25h & 1.25h \\ \hline
+    \end{tabular}
 
+\end{description}
 
-
-Implementierung des Chatraums (JMS Topic) 3h
-Implementierung der Postfach-Funktionalität (JMS Queue) 3h
-Dokumentation 3h
-Testing 2h
 \section{Installation}
-
 \begin{enumerate}
 \item Herunterladen der Installationsdateien[1].
 \item Entpacken der Installationsdateien mit unzip
 \item Ändern der Rechte von bin/activemq mit chmod u+x, damit die Datei ausführbar wird.
-\end{itemize}
-
+\end{enumerate}
 
 \section{Aufgetretene Probleme}
 \subsection{Installation}
 Für das Debian-Image muss eine Änderung durchgeführt werden, damit Apache Active MQ gestartet werden kann.
-> Öffnen Sie die Datei bin/activemq mit einem Editor Ihrer Wahl 
-> Suchen Sie nach folgender Zeile
-       ACTIVEMQ_OPTS_MEMORY="-Xms1G -Xmx1G"
-> Ersetzen Sie diese Zeile mit:
-       ACTIVEMQ_OPTS_MEMORY="-Xms512M -Xmx512M"
+Öffnen Sie die Datei bin/activemq mit einem Editor Ihrer Wahl 
+Suchen Sie nach folgender Zeile
+%       ACTIVEMQ_OPTS_MEMORY="-Xms1G -Xmx1G"
+Ersetzen Sie diese Zeile mit:
+%       ACTIVEMQ_OPTS_MEMORY="-Xms512M -Xmx512M"
 \section{Testing}
 
 
