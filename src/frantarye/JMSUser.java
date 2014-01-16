@@ -66,8 +66,6 @@ public class JMSUser extends Thread {
 			mail.connect();
 		} catch (JMSException e3) {
 			e3.printStackTrace();
-		} catch (NamingException e3) {
-			e3.printStackTrace();
 		}
 		
 		try {
@@ -96,7 +94,7 @@ public class JMSUser extends Thread {
 					// MAIL mailbox, message is the rest of the line
 					try {
 						mail.sendMail(split[1], msg.toString());
-					} catch (NamingException | JMSException e2) {
+					} catch (JMSException e2) {
 						e2.printStackTrace();
 					}
 					break;

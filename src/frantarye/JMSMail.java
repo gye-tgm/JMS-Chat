@@ -5,14 +5,23 @@ import java.util.Enumeration;
 
 import javax.jms.*;
 import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+/**
+ * This class is an Interface to the given mailbox. It also provides a method to send a mail to someone else's mailbox.
+ * @author Elias Frantar
+ * @version 13.1.14
+ */
 public class JMSMail {
-	private String url;
-	private String mailbox;
+	/**
+	 * The error to print when catching JMSExceptions thrown by this class.
+	 */
+	public static final String JMS_ERROR = "A JMS error occured!: "; // the error to print when catching Exceptions
+	
+	private String url; // URL to the server
+	private String mailbox; // name of you own mailbox
 	
 	Context jndiContext;
 	private Connection connection;
@@ -21,12 +30,23 @@ public class JMSMail {
 	private QueueBrowser browser;
 	private MessageProducer producer;
 	
+	/**
+	 * Creates a new mailbox interface to the given mailbox
+	 * @param mailbox the name of the mailbox
+	 * @param url the URL to the mailbox
+	 */
 	public JMSMail(String mailbox, String url) {
 		this.url = url;
 		this.mailbox = mailbox;
 	}
 	
-	public void sendMail(String mailbox, String message) throws NamingException, JMSException {
+	/**
+	 * Sends a message to the given mailbox. connect() must haven been called before!
+	 * @param mailbox the name of the mailbox to send to
+	 * @param message the message to send
+	 * @throws NamingException thrown if a NamingException occurred
+	 */
+	public void sendMail(String mailbox, String message) throws JMSException {
 		Queue queue_to_send = session.createQueue(mailbox);
 		
 		producer = session.createProducer(queue_to_send);
@@ -36,6 +56,11 @@ public class JMSMail {
 		producer.send(msg);
 	}
 	
+	/**
+	 * Retrieves all mails from your own mailbox. (also includes mails you have already view some time before) connect() must have been called before!
+	 * @return a list all received mails
+	 * @throws JMSException thrown if a JMSException occurred
+	 */
 	public ArrayList<String> retrieveMails() throws JMSException {
 		ArrayList<String> mails = new ArrayList<>();
 		
@@ -52,11 +77,10 @@ public class JMSMail {
 	}
 	
 	/**
-	 * Connects this participant to the in 'subject' specified chatroom.
+	 * Connects this mailbox. Creates a new one if necessary
 	 * @throws JMSException JMSException thrown if a JMSException occurred
-	 * @throws NamingException 
 	 */
-	public void connect() throws JMSException, NamingException {
+	public void connect() throws JMSException{
 		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
 		connection = connectionFactory.createConnection();
 		connection.start();
@@ -68,7 +92,7 @@ public class JMSMail {
 		browser = session.createBrowser(queue);
 	}
 	/**
-	 * Disconnects this participant from the in 'subject' specified chatroom. Automatically stops receiving messages.
+	 * Disconnects from this mailbox. Afterwards reading and sending is not possible anymore.
 	 * @throws JMSException JMSException thrown if a JMSException occurred
 	 */
 	public void disconnect() throws JMSException {
