@@ -21,7 +21,7 @@ public class SyntaxCheckerTest {
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckInput1() {
+	public void testCheckInputEmpty() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("");
 		assertEquals(type, InputType.ERROR);
 	}
@@ -30,15 +30,15 @@ public class SyntaxCheckerTest {
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckInput2() {
-		SyntaxChecker.InputType type = SyntaxChecker.checkInput("aaaaaaaaaaaaaaaaa");
+	public void testCheckInputOneWord() {
+		SyntaxChecker.InputType type = SyntaxChecker.checkInput("Fox");
 		assertEquals(type, InputType.MESSAGE_SEND);
 	}
 	/**
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckInput3() {
+	public void testCheckInputMoreWords() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("The quick brown fox jumps over the lazy dog");
 		assertEquals(type, InputType.MESSAGE_SEND);
 	}
@@ -47,7 +47,7 @@ public class SyntaxCheckerTest {
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckInputMailbox1() {
+	public void testCheckInputMailboxOnly() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("MAILBOX");
 		assertEquals(type, InputType.MAILBOX);
 	}
@@ -56,7 +56,7 @@ public class SyntaxCheckerTest {
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckInputMailbox2() {
+	public void testCheckInputWhitespaceMailbox() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput(" MAILBOX");
 		assertEquals(type, InputType.MESSAGE_SEND);
 	}
@@ -65,7 +65,7 @@ public class SyntaxCheckerTest {
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckInputMailbox3() {
+	public void testCheckInputMailboxWhitespaces() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("MAILBOX  ");
 		assertEquals(type, InputType.MAILBOX);
 	}
@@ -74,7 +74,7 @@ public class SyntaxCheckerTest {
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckInputMailbox4() {
+	public void testCheckInputMailboxSpelledWrong() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("mailbox ");
 		assertEquals(type, InputType.MESSAGE_SEND);
 	}
@@ -83,7 +83,7 @@ public class SyntaxCheckerTest {
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckMail1() {
+	public void testCheckMailCorrectMessage() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("MAIL 192.168.163.129 juhu :)");
 		assertEquals(type, InputType.MAIL_SEND);
 	}
@@ -92,7 +92,7 @@ public class SyntaxCheckerTest {
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckMail2() {
+	public void testCheckMailNoMessage() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("MAIL 192.168.163.129");
 		assertEquals(type, InputType.ERROR);
 	}
@@ -101,20 +101,9 @@ public class SyntaxCheckerTest {
 	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
 	 */
 	@Test
-	public void testCheckMail3() {
+	public void testCheckMailDNSInsteadOfIPMessage() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("MAIL DNS ist Cool");
 		assertEquals(type, InputType.MAIL_SEND);
 	}
-	
-	/**
-	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
-	 */
-	@Test
-	public void testCheckMail4() {
-		SyntaxChecker.InputType type = SyntaxChecker.checkInput("MAIL DNS ist Cool");
-		assertEquals(type, InputType.MAIL_SEND);
-	}
-	
-	
 
 }
