@@ -5,6 +5,7 @@ import java.util.Enumeration;
 
 import javax.jms.*;
 import javax.naming.Context;
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 /**
@@ -44,31 +45,40 @@ public class JMSMail {
 	 * @param message the message to send
 	 * @throws NamingException thrown if a NamingException occurred
 	 */
-	public void sendMail(String mailbox, String message) throws JMSException {
-		Queue queue_to_send = session.createQueue(mailbox);
-		
-		producer = session.createProducer(queue_to_send);
-		producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-		
-		TextMessage msg = session.createTextMessage(message);
-		producer.send(msg);
+	public void sendMail(String mailbox, String message) {
+		try {
+			Queue queue_to_send = session.createQueue(mailbox);
+			
+			producer = session.createProducer(queue_to_send);
+			producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+			
+			TextMessage msg = session.createTextMessage(message);
+			producer.send(msg);
+		} catch(JMSException e){
+			System.err.println("The message could not be sent!");
+			// System.err.println(e.getMessage());
+		}
 	}
 	
 	/**
 	 * Retrieves all mails from your own mailbox. (also includes mails you have already view some time before) connect() must have been called before!
 	 * @return a list all received mails
-	 * @throws JMSException thrown if a JMSException occurred
 	 */
-	public ArrayList<String> retrieveMails() throws JMSException {
+	public ArrayList<String> retrieveMails() {
 		ArrayList<String> mails = new ArrayList<>();
 		
-		Enumeration<?> messages = browser.getEnumeration();
-		while(messages.hasMoreElements()) {
-			TextMessage message = (TextMessage)messages.nextElement();
-			if(message.getText() != null) {
-				mails.add(message.getText()); // save text of mail
-				message.acknowledge();
+		try {
+			Enumeration<?> messages = browser.getEnumeration();
+			while(messages.hasMoreElements()) {
+				TextMessage message = (TextMessage)messages.nextElement();
+				if(message.getText() != null) {
+					mails.add(message.getText()); // save text of mail
+					message.acknowledge();
+				}
 			}
+		} catch(JMSException e){
+			System.err.println("Could not retrieve the mails!");
+			System.err.println(e.getMessage());
 		}
 		
 		return mails;
@@ -76,26 +86,29 @@ public class JMSMail {
 	
 	/**
 	 * Connects this mailbox. Creates a new one if necessary
-	 * @throws JMSException JMSException thrown if a JMSException occurred
 	 */
-	public void connect() throws JMSException{
-		ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
-		connection = connectionFactory.createConnection();
-		connection.start();
-		
-		// Create the session
-		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		queue = session.createQueue(mailbox);
-		
-		browser = session.createBrowser(queue);
+	public void connect() {
+		try {
+			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
+			connection = connectionFactory.createConnection();
+			connection.start();
+			
+			// Create the session
+			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			queue = session.createQueue(mailbox);
+			
+			browser = session.createBrowser(queue);
+		} catch(JMSException e){
+			System.err.println("Could not connect to the mailbox!");
+			System.err.println(e.getMessage());
+		}
 	}
 	/**
 	 * Disconnects from this mailbox. Afterwards reading and sending is not possible anymore.
-	 * @throws JMSException JMSException thrown if a JMSException occurred
-	 */
-	public void disconnect() throws JMSException {
-		browser.close();
-		session.close();
-		connection.close();
+	*/
+	public void disconnect() {
+		try { browser.close();} catch (JMSException e) {}
+		try { session.close();} catch (JMSException e) {}
+		try { connection.close();} catch(JMSException e) {}
 	}
 }
