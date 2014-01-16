@@ -6,10 +6,7 @@ import java.io.InputStreamReader;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
-
 import javax.jms.JMSException;
-import javax.naming.NamingException;
 
 /**
  * @author Gary Ye

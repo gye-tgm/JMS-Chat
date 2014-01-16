@@ -5,8 +5,6 @@ import java.util.Enumeration;
 
 import javax.jms.*;
 import javax.naming.Context;
-import javax.naming.NamingException;
-
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 /**
@@ -64,7 +62,7 @@ public class JMSMail {
 	public ArrayList<String> retrieveMails() throws JMSException {
 		ArrayList<String> mails = new ArrayList<>();
 		
-		Enumeration messages = browser.getEnumeration();
+		Enumeration<?> messages = browser.getEnumeration();
 		while(messages.hasMoreElements()) {
 			TextMessage message = (TextMessage)messages.nextElement();
 			if(message.getText() != null) {
