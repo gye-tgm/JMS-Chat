@@ -10,6 +10,8 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.regex.Pattern;
+
 import javax.jms.JMSException;
 
 /**
@@ -45,13 +47,14 @@ public class JMSUser extends Thread {
 		try {
 			ip = getIp(iface);	
 		} catch (Exception e) {
-			System.err.println("The given interface does not exist!");
+			System.err.println("The given interface does not exist!\n" + e.getMessage());
 			System.exit(1);
 		}
 		
 		// Chat message
 		String url = String.format("tcp://%s:61616", ip_message_broker);
 		System.out.println(url);
+		System.out.println(ip);
 		chat = new JMSChat(subject, url);
 		// Mail Box
 		mail = new JMSMail(ip, url);
@@ -128,11 +131,17 @@ public class JMSUser extends Thread {
 	 * @param ifaceName the name of the interface
 	 * @return the ipv4 address of this interface;
 	 * @throws SocketException thrown if a SocketException occurred
+	 * @throws UnknownHostException 
 	 */
-	public String getIp(String ifaceName) throws SocketException {	    
+	public String getIp(String ifaceName) throws SocketException, UnknownHostException {	    
 		NetworkInterface iface = NetworkInterface.getByName(ifaceName);
 		Enumeration<InetAddress> ee = iface.getInetAddresses();
-		return ee.nextElement().getHostAddress();
+		while(ee.hasMoreElements()) {
+			String ip = ee.nextElement().getHostAddress().toString();
+			if(ip.contains(".")) // if the address contains a '.' it is a ipv4 one
+					return ip;
+		}
+		return ip; // if there is no ipv4 just return the ipv6
 	}
 
 	public static void main(String[] args) {
