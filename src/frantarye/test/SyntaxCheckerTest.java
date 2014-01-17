@@ -23,7 +23,7 @@ public class SyntaxCheckerTest {
 	@Test
 	public void testCheckInputEmpty() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("");
-		assertEquals(type, InputType.ERROR);
+		assertEquals(type, InputType.EMPTY);
 	}
 	
 	/**
@@ -94,7 +94,7 @@ public class SyntaxCheckerTest {
 	@Test
 	public void testCheckMailNoMessage() {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("MAIL 192.168.163.129");
-		assertEquals(type, InputType.ERROR);
+		assertEquals(type, InputType.MAIL_ERROR);
 	}
 	
 	/**
@@ -105,5 +105,15 @@ public class SyntaxCheckerTest {
 		SyntaxChecker.InputType type = SyntaxChecker.checkInput("MAIL DNS ist Cool");
 		assertEquals(type, InputType.MAIL_SEND);
 	}
+	
+	/**
+	 * Test method for {@link frantarye.SyntaxChecker#checkInput(java.lang.String)}.
+	 */
+	@Test
+	public void testCheckExit() {
+		SyntaxChecker.InputType type = SyntaxChecker.checkInput("EXIT");
+		assertEquals(type, InputType.EXIT);
+	}
+	
 
 }
