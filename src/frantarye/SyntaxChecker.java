@@ -6,14 +6,8 @@ package frantarye;
  *          called statically.
  */
 public class SyntaxChecker {
-	/*
-	 * private static final String ERROR_1 = ""; private static final String
-	 * ERROR_2 = ""; private static final String ERROR_3 = ""; private static
-	 * final String ERROR_4 = "";
-	 */
-
 	public enum InputType {
-		MESSAGE_SEND, MAIL_SEND, MAILBOX, ERROR
+		MESSAGE_SEND, MAIL_SEND, MAILBOX, EMPTY, MAIL_ERROR, MAILBOX_ERROR, EXIT
 	}
 
 	/**
@@ -26,23 +20,15 @@ public class SyntaxChecker {
 	 */
 	public static InputType checkInput(String input) {
 		if (input.isEmpty())
-			return InputType.ERROR;
+			return InputType.EMPTY;
 		String[] split = input.split(" ");
 		switch (split[0]) {
 		case "MAIL":
-			if (split.length >= 3)
-				return InputType.MAIL_SEND;
-			else {
-				System.err.println("usage: MAIL <ip_partner> <nachricht>");
-				return InputType.ERROR;
-			}
+			return (split.length >= 3 ? InputType.MAIL_SEND : InputType.MAIL_ERROR);
 		case "MAILBOX":
-			if (split.length == 1)
-				return InputType.MAILBOX;
-			else {
-				System.err.println("usage: MAILBOX");
-				return InputType.ERROR;
-			}
+			return split.length == 1 ? InputType.MAILBOX : InputType.MAILBOX_ERROR;
+		case "EXIT":
+			return InputType.EXIT;	
 		}
 		// Everything else will be recognized as a normal chat message
 		return InputType.MESSAGE_SEND;
