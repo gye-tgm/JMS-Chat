@@ -41,6 +41,7 @@
 		<arg value="${ip}"/>
 		<arg value="${user}"/>
 		<arg value="${chatroom}"/>
+		<arg value="${iface}"/>
 	</java>
   </target>
 </project>
