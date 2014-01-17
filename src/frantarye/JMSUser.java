@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+
 import javax.jms.JMSException;
 
 /**
@@ -59,11 +60,7 @@ public class JMSUser extends Thread {
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 		String inputLine;
 		
-		try {
-			mail.connect();
-		} catch (JMSException e3) {
-			e3.printStackTrace();
-		}
+		mail.connect();
 		
 		try {
 			chat.connect();
@@ -72,14 +69,22 @@ public class JMSUser extends Thread {
 		}
 		
 		chat.startReceiving(); // Start listening
-
+		boolean done = false;
 		try {
-			while ((inputLine = in.readLine()) != null) {
+			while (!done && (inputLine = in.readLine()) != null) {
 				SyntaxChecker.InputType type = SyntaxChecker
 						.checkInput(inputLine);
 				switch (type) {
-				case ERROR:
-					System.err.println("Unknown error\n");
+				case EMPTY:
+					break;
+				case MAILBOX_ERROR:
+					System.err.println("usage: MAILBOX");
+					break;
+				case MAIL_ERROR:
+					System.err.println("usage: MAIL <ip_partner> <nachricht>");
+					break;
+				case EXIT:
+					done = true;// Will quit the while loop
 					break;
 				case MAIL_SEND:
 					String[] split = inputLine.split(" ");
@@ -88,20 +93,11 @@ public class JMSUser extends Thread {
 						if(i > 2) msg.append(' ');
 						msg.append(split[i]);
 					}
-					// MAIL mailbox, message is the rest of the line
-					try {
-						mail.sendMail(split[1], msg.toString());
-					} catch (JMSException e2) {
-						e2.printStackTrace();
-					}
+					mail.sendMail(split[1], msg.toString());
 					break;
 				case MAILBOX:
 					ArrayList<String> mails = null;
-					try {
-						mails = mail.retrieveMails();
-					} catch (JMSException e1) {
-						e1.printStackTrace();
-					}
+					mails = mail.retrieveMails();
 					for (String m : mails)
 						System.out.println(m);
 					break;
