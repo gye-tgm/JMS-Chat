@@ -10,7 +10,6 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-
 import javax.jms.JMSException;
 
 /**
@@ -36,14 +35,17 @@ public class JMSUser extends Thread {
 	 *            the user name of this user
 	 * @param subject
 	 *            the subject of the chat room
+	 * @param iface
+	 * 			  the name of the iface to use the IP-address from
 	 */
-	public JMSUser(String ip_message_broker, String username, String subject) {
+	public JMSUser(String ip_message_broker, String username, String subject, String iface) {
 		// Own attributes
 		this.username = username;
+		
 		try {
-			ip = Inet4Address.getLocalHost().getHostAddress();	
-		} catch (UnknownHostException e) {
-			System.err.println("The localhost is unknown.");
+			ip = getIp(iface);	
+		} catch (Exception e) {
+			System.err.println("The given interface does not exist!");
 			System.exit(1);
 		}
 		
@@ -139,10 +141,10 @@ public class JMSUser extends Thread {
 	}
 
 	public static void main(String[] args) {
-		if (args.length != 3) {
-			System.err.println("usage: vsdbchat <ip_message_broker> <username> <chatroom>");
+		if (args.length != 4) {
+			System.err.println("usage: vsdbchat <ip_message_broker> <username> <chatroom> <network interface>");
 		} else {
-			new JMSUser(args[0], args[1], args[2]).start();
+			new JMSUser(args[0], args[1], args[2], args[3]).start();
 		}
 	}
 }
