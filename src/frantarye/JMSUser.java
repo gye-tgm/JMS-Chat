@@ -4,12 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Enumeration;
 
 import javax.jms.JMSException;
-import javax.naming.NamingException;
 
 /**
  * @author Gary Ye
@@ -111,15 +113,29 @@ public class JMSUser extends Thread {
 				case MESSAGE_SEND:
 					try {
 						chat.sendMessage(username, ip, inputLine);
-					} catch (JMSException e) {
+					} 
+					catch (JMSException e) {
 						System.err.println(JMSChat.JMS_ERROR + "\n" + e.getMessage());
 					}
 					break;
 				}
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			System.err.println("IOException occured!\n");
 		}
+	}
+	
+	/**
+	 * Returns the ipv4 address of the given network interface (if exists)
+	 * @param ifaceName the name of the interface
+	 * @return the ipv4 address of this interface;
+	 * @throws SocketException thrown if a SocketException occurred
+	 */
+	public String getIp(String ifaceName) throws SocketException {	    
+		NetworkInterface iface = NetworkInterface.getByName(ifaceName);
+		Enumeration<InetAddress> ee = iface.getInetAddresses();
+		return ee.nextElement().getHostAddress();
 	}
 
 	public static void main(String[] args) {
