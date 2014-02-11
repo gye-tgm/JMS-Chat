@@ -2,6 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{listings}             % Include the listings-package for c++,java,idl
+\usepackage[margin=0.75in]{geometry}
 % \usepackage[ngerman]{babel}
 
 \title{JMS-Chat}
@@ -76,7 +77,65 @@ Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt un
 \item Entpacken der Installationsdateien mit unzip
 \item Ändern der Rechte von bin/activemq mit chmod u+x, damit die Datei ausführbar wird.
 \end{enumerate}
+\newpage
 
+\section{Neue Technologien}
+\subsection{Grundlagen}
+Das Java Message Service (JMS) ist eine auf Java basierende Message Oriented Middleware (MOM) zum Versenden von Nachrichten zwischen 2 oder mehr Systemen.
+Grundlegend funtkioniert dies folgendermaßen:
+Auf der MOM (meist auf einem Server liegend) können Topics und Queues angelegt werden.
+In diese können JMS-Teilnehmer Nachrichten versenden bzw. Nachrichten von ihnen empfangen/auslesen. (sofern entsprechende Zugriffsrechte vorhanden)
+D.h. alle Systeme kommunizieren nur über Nachrichten (Objekte) welche über die MOM ausgetauscht werden.
+
+Genauere Informationen über die Implementierung sind in den folgenden zwei Abschnitten zu finden.
+
+\subsection{JMS-Topic}
+Ein JMS-Topic ist, ähnlich wie Chat-Room, ein auf der MOM liegender Ort in den Nachrichten gesendet werden können. Ein JMS-Teilnehmer kann einem Topic
+subscriben und erhält dadurch alle Nachrichten, die an das Topic gesendet werden (auch die eigenen).
+
+Im folgenden Abschnitt ist die Implementierung der Verwendung eines JMS-Topics mithilfe von Code-Snippets erläutert.
+\begin{lstlisting}[language=Java]
+ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
+connection = connectionFactory.createConnection();
+connection.start();
+\end{lstlisting}
+Als erstes muss eine Verbindung mit dem JMS hergestellt werden. Dazu wird mithilfe der ActiveMQConnectionFactory eine Connection mit der JMS-Server-URL
+hergestellt.
+\begin{lstlisting}[language=Java]
+session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE)
+\end{lstlisting}
+Als nächstes kann mithilfe der erfolgreichen Verbindung eine JMS-Session erstellt werden. Durch dieses Session können im Anschluss Sender, Empfänger, sowie
+Topics oder Queues erstellt werden.
+\begin{lstlisting}[language=Java]
+destination = session.createTopic(subject);
+
+producer = session.createProducer(destination);
+producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
+		
+consumer = session.createConsumer(destination);
+\end{lstlisting}
+Wie oben bereits erwähnt wird nun durch die Session ein Topic, sofern es nicht bereits existiert, erstellt.
+Im Anschluss werden noch ein Nachrichtensender (producer), welcher versende, die nur temporär auf dem Server gespeicher werden und ein Nachrichtenempfägner,
+welcher einem Topic subscribt und dementsprechend allen in diesem Topic eintreffende Nachrichten empfängt.
+\begin{lstlisting}[language=Java]
+TextMessage message = (TextMessage)consumer.receive();
+System.out.println(message.getText());
+message.acknowledge();
+\end{lstlisting}
+Nun kann druch den Consumer eine Nachricht empfagen werden. Diese Methode blockiert solange bis sie eine Nachricht erhält. Aus dieser Nachricht kann im
+Anschluss nun zum Beispiel der Textinhalt ausgelesen werden. Um dem Server zu bestätigen, dass diese Nachricht erhalten wurden und sie nicht nochmals gesendet
+werden muss, wird abschließend noch acknowledge() aufgerufen.
+\begin{lstlisting}[language=Java]
+TextMessage message_to_send = session.createTextMessage(username + " " +  ip + ": " + message);
+producer.send(message_to_send);
+\end{lstlisting}
+Mit dem Producer können Nachrichten an das festgelegte Topic verschickt werden. Dazu wird zuerst ein MessageObject (z.B. TextMessage) erzeugt, welches
+anschließend durch send() versendet werden kann.
+\subsection{JMS-Queue}
+Eine Queue ist, ähnlich wie ein Topic, ein auf der MOM liegender Ort. Der Unterschied ist nur das in eine Queue zwar ebenfalls Nachrichten gesendet werden
+können. Diese aber manuell ausgelesen werden müssen. Das Auslesen geschieht außerdem nach dem Queue-Prinzip, also First in First out.
+
+Im folgenden Abschnitt ist die Implementierung der Verwendung einer JMS-Queue mithilfe von Code-Snippets erläutert.
 \section{Aufgetretene Probleme}
 \subsection{Installation}
 Für das Debian-Image muss eine Änderung durchgeführt werden, damit Apache Active MQ gestartet werden kann.
