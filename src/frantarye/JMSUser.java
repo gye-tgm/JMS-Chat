@@ -3,14 +3,12 @@ package frantarye;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.regex.Pattern;
 
 import javax.jms.JMSException;
 
@@ -47,7 +45,7 @@ public class JMSUser extends Thread {
 		try {
 			ip = getIp(iface);	
 		} catch (Exception e) {
-			System.err.println("The given interface does not exist!\n" + e.getMessage());
+			System.err.println("The given interface does not exist!\nException: " + e.getMessage());
 			System.exit(1);
 		}
 		
@@ -141,6 +139,9 @@ public class JMSUser extends Thread {
 			if(ip.contains(".")) // if the address contains a '.' it is a ipv4 one
 					return ip;
 		}
+		if(ip == null)
+			throw new UnknownHostException(); // interface does not exist
+		
 		return ip; // if there is no ipv4 just return the ipv6
 	}
 
