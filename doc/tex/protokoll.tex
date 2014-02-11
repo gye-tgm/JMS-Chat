@@ -30,13 +30,53 @@
 \newpage
 
 \section{Aufgabenstellung}
+Implementieren Sie eine Chatapplikation mit Hilfe des Java Message Service. Verwenden Sie Apache ActiveMQ (http://activemq.apache.org) als Message Broker Ihrer Applikation. Das Programm soll folgende Funktionen beinhalten:
+
+Benutzer meldet sich mit einem Benutzernamen und dem Namen des Chatrooms an. 
+Beispiel für einen Aufruf: 
+
+\begin{lstlisting}
+vsdbchat <ip_message_broker> <benutzername> <chatroom>
+\end{lstlisting}
+
+Der Benutzer kann in dem Chatroom (JMS Topic) Nachrichten an alle Teilnehmer eine Nachricht senden und empfangen. 
+Die Nachricht erscheint in folgendem Format:
+\begin{lstlisting}
+<benutzername> [<ip_des_benutzers>]: <Nachricht>
+\begin{lstlisting}
+
+Zusätzlich zu dem Chatroom kann jedem Benutzer eine Nachricht in einem persönlichen Postfach (JMS Queue) hinterlassen werden. Der Name des Postfachs ist die IP Adresse des Benutzers (Eindeutigkeit).
+
+Nachricht an das Postfach senden: 
+\begin{lstlisting}
+MAIL <ip_des_benutzers> <nachricht>
+\end{lstlisting}
+
+Eignes Postfach abfragen: 
+\begin{lstlisting}
+MAILBOX
+\end{lstlisting}
+
+Der Chatraum wird mit den Schlüsselwort EXIT verlassen. Der Benutzer verlaesst den Chatraum, die anderen Teilnehmer sind davon nicht betroffen.
+Gruppenarbeit: Die Arbeit ist in einer 2er-Gruppe zu lösen und über das Netzwerk zu testen! Abnahmen, die nur auf localhost basieren sind unzulässig und werden mit 6 Minuspunkten benotet!
+
+\subsection{Quellen}
+\begin{itemize}
+\item http://activemq.apache.org/index.html
+\item http://www.academictutorials.com/jms/jms-introduction.asp
+\item http://docs.oracle.com/javaee/1.4/tutorial/doc/JMS.html#wp84181
+\item http://www.openlogic.com/wazi/bid/188010/How-to-Get-Started-with-ActiveMQ
+\item http://jmsexample.zcage.com/index2.html
+\item http://www.onjava.com/pub/a/onjava/excerpt/jms_ch2/index.html
+\item http://www.oracle.com/technetwork/systems/middleware/jms-basics-jsp-135286.html
+\item http://java.sun.com/developer/technicalArticles/Ecommerce/jms
+\end{itemize}
 
 \section{Aufwandsschätzung}
 Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt und entfällt daher.
 
 \begin{description}
 \item[Alle Teammitglieder] \hfill \\
-
   \begin{tabular} {| l | l |}
     \hline
     Task & Tatsächlich \\ \hline
@@ -58,7 +98,6 @@ Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt un
   \end{tabular}
 
 \item[Ye] \hfill \\
-
     \begin{tabular} {| l | l | l |}
       \hline
       Task & Schätzung & Aufwand \\ \hline
@@ -68,7 +107,6 @@ Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt un
       \hline
       Gesamt & 3.25h & 1.25h \\ \hline
     \end{tabular}
-
 \end{description}
 
 \section{Installation}
@@ -144,8 +182,13 @@ Suchen Sie nach folgender Zeile
 %       ACTIVEMQ_OPTS_MEMORY="-Xms1G -Xmx1G"
 Ersetzen Sie diese Zeile mit:
 %       ACTIVEMQ_OPTS_MEMORY="-Xms512M -Xmx512M"
+\subsection{IP Addresse}
+Man kann mittels ActiveMQ nicht direkt die IP Addressen von dem Sender herausfinden. Siehe 
+%TODO
+Deshalbe wurde beschlossen, dass der User sie selber angibt, indem er das Programm das zu verwendende Interface übergibt.
+
 \section{Testing}
 
-
+\section{Resultate und Niederlagen}
 
 \end{document}
