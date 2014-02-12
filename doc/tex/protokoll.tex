@@ -236,6 +236,8 @@ while(messages.hasMoreElements()) {
 Mit einem Browser kann eine Liste aller sich in der Queue befindenden Nachrichten augelesen werden. Diese können nun in Sendungsreihenfolge nacheinander
 ausgelesen werden.
 
+\newpage
+
 \section{Aufgetretene Probleme}
 \subsection{Installation}
 Für das Debian-Image muss eine Änderung durchgeführt werden, damit Apache Active MQ gestartet werden kann.
@@ -249,7 +251,51 @@ Man kann mittels ActiveMQ nicht direkt die IP Addressen von dem Sender herausfin
 %TODO
 Deshalbe wurde beschlossen, dass der User sie selber angibt, indem er das Programm das zu verwendende Interface übergibt.
 
+\newpage
+
 \section{Testing}
+\subsection{Systemtest}
+Sämtliche Systemtests wurden über das Netzwerk durchgeführt.
+Als Testumgebung wird eine ActiveMQ auf einem in einer virtuellen Maschine laufenden Debian-Server eingesetzt. 3 Hosts (1 Debian + 2 Windows) verbinden sich
+mit diesem Server. Die Hostmaschinen und der Server sind nur über das Netzwerk verbunden.
+
+In den folgenden Abschnitten sind die einzelnen Testcases mit Ergebnissen detailliert dokumentiert.
+
+\subsubsection{Chat}
+Zum Testen des Chats verbinden sich 3 Clients im Chatroom 'Kryptos' mit dem JMS-Server.
+Anschließend werden Nachrichten von allen 3 Seiten ausgetauscht.
+
+Erwartet: Alle Nachrichten kommen mit Sendernamen auf allen 3 Hosts an.
+
+%	TODO: Add Screenshots!
+
+Ergebnis: Wie erwartet, sind alle Nachrichten auf allen 3 verschiedenen Hostsystemen im korrekten Format angekommen.
+
+\subsubsection{Mail}
+Zum Testen des Mailservices verbinden sich erneut 3 Clients im Chatroom 'Kryptos' mit dem ActiveMQ-Server.
+Nun senden verschiedene Clients verschiedene Nachrichten an den 1. auf Windows befindenden Host.
+Dieser ruft dann seine Mailbox ab und liest damit alle empfangenen Nachrichten aus.
+
+%	TODO: Add Screenshots!
+Erwartet: Alle Nachrichten befinden sich in der Mailbox des Empfängers.
+
+Ergebnis: Wie erwartet scheinen alle Nachrichten in der Mailbox des Empfängers auf. Zusätzlich werden diese dauerhaft gespeichert, d.h. wenn die Mailbox erneut
+abgerufen wird, werden trotzdem noch alle bereits vorher gesendeten Nachrichten angezeigt. Dieses Feature ist in der Aufgabenstellung nicht definiert und der
+Testfall wird daher als erfolgreich angesehen.
+
+\subsubsection{SyntaxChecker}
+Der SyntaxChecker, also das Tools welches bei Eingabe von Kommandos im Chat überprüft, ob es sich um korrekte und wenn ja, um welche Eingabe, handelt,
+eignet sich sehr gut für den Einsatz von Regressions- bzw. Unit-Tests.
+Die entsprechenden JUnit-Testcases sind unter src/frantarye/test zu finden.
+Diese Tests überprüfen das Verhalten der Applikation bei falschen, sowie bei korrekten Eingaben. (Fehlermeldung inkludiert)
+
+\subsubsection{jar-fileaufruf}
+Als letztes wird das Verhalten des jar-Files bei falschen Eingabeparametern getestet.
+Die durchgeführten Tests sind in den folgenden Screenshots zu sehen.
+
+%	TODO: Add Screenshots!
+
+\newpage
 
 \section{Resultate und Niederlagen}
 
