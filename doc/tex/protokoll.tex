@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{listings}             % Include the listings-package for c++,java,idl
 \usepackage[margin=0.75in]{geometry}
+\usepackage{graphicx}
 % \usepackage[ngerman]{babel}
 
 \title{JMS-Chat}
@@ -256,38 +257,65 @@ Deshalbe wurde beschlossen, dass der User sie selber angibt, indem er das Progra
 \section{Testing}
 \subsection{Systemtest}
 Sämtliche Systemtests wurden über das Netzwerk durchgeführt.
-Als Testumgebung wird eine ActiveMQ auf einem in einer virtuellen Maschine laufenden Debian-Server eingesetzt. 3 Hosts (1 Debian + 2 Windows) verbinden sich
-mit diesem Server. Die Hostmaschinen und der Server sind nur über das Netzwerk verbunden.
+Folgende Netzwerkkonfiguration wird verwendet:
+
+\begin{itemize}
+	\item ActiveMQServer: Linux-basierter Server (externer Server)
+	\item user1: Windows Host (HostOS auf PC1)
+	\item user2: Linux Host (HostOS auf PC2)
+	\item user3: Linux Host (OS in VM auf PC2 mit Bridged direkt an das Netzwerk angeschlossen)
+\end
 
 In den folgenden Abschnitten sind die einzelnen Testcases mit Ergebnissen detailliert dokumentiert.
 
 \subsubsection{Chat}
-Zum Testen des Chats verbinden sich 3 Clients im Chatroom 'Kryptos' mit dem JMS-Server.
-Anschließend werden Nachrichten von allen 3 Seiten ausgetauscht.
 
-Erwartet: Alle Nachrichten kommen mit Sendernamen auf allen 3 Hosts an.
+Ablauf:
+\begin{itemize}
+	\item user1, user2 und user3 verbinden sich mit 'ChatRoom1'
+	\item user1: Hello everyone!
+	\item user2: Hi user1
+	\item user3: Good evening user1. How are you?
+	\item user1: I'm fine, thanks.
+\end
 
-%	TODO: Add Screenshots!
+Erwartet: Alle Nachrichten kommen mit Sendernamen und SenderIP auf allen 3 unterschiedlichen Hosts (auch Sender) in der richtigen Reihenfolge an.
+
+\includegraphics{chat_user1.PNG}
+\includegraphics{chat_user2.PNG}
+\includegraphics{chat_user3.PNG}
 
 Ergebnis: Wie erwartet, sind alle Nachrichten auf allen 3 verschiedenen Hostsystemen im korrekten Format angekommen.
 
 \subsubsection{Mail}
-Zum Testen des Mailservices verbinden sich erneut 3 Clients im Chatroom 'Kryptos' mit dem ActiveMQ-Server.
-Nun senden verschiedene Clients verschiedene Nachrichten an den 1. auf Windows befindenden Host.
-Dieser ruft dann seine Mailbox ab und liest damit alle empfangenen Nachrichten aus.
 
-%	TODO: Add Screenshots!
-Erwartet: Alle Nachrichten befinden sich in der Mailbox des Empfängers.
+Ablauf:
+\begin{itemize}
+	\item user1, user2 und user3 verbinden sich erneut mit 'ChatRoom1'
+	\item user2: MAIL 'user1IP' Dear user1, I'm just testing the brandnew JMS Mailservice ;)
+	\item user2: Hey user1, check out your mails!
+	\item user1: MAILBOX
+	\item user1: Received it!
+	\item user3: MAIL 'user1IP' a test mail from me ;)
+	\item user1: MAILBOX
+	\item user1: It works!
+\end
+
+\includegraphics{mail_user1.PNG}
+\includegraphics{mail_user2.PNG}
+\includegraphics{mail_user3.PNG}
+
+Erwartet: Alle Nachrichten landen in der Mailbox des Empfängers. Bei Aufruf von MAILBOX werden diese in korrekter Reihenfolge ausgelesen.
 
 Ergebnis: Wie erwartet scheinen alle Nachrichten in der Mailbox des Empfängers auf. Zusätzlich werden diese dauerhaft gespeichert, d.h. wenn die Mailbox erneut
-abgerufen wird, werden trotzdem noch alle bereits vorher gesendeten Nachrichten angezeigt. Dieses Feature ist in der Aufgabenstellung nicht definiert und der
-Testfall wird daher als erfolgreich angesehen.
+abgerufen wird, werden trotzdem noch alle bereits vorher gesendeten Nachrichten angezeigt. Dieses Feature entspricht einer normalen Mailbox und ist daher
+gewollt.
 
 \subsubsection{SyntaxChecker}
-Der SyntaxChecker, also das Tools welches bei Eingabe von Kommandos im Chat überprüft, ob es sich um korrekte und wenn ja, um welche Eingabe, handelt,
-eignet sich sehr gut für den Einsatz von Regressions- bzw. Unit-Tests.
+Der SyntaxChecker ist das Tools welches bei Eingabe von Kommandos im Chat überprüft, ob es sich um korrekte und wenn ja, um welche Eingabe, handelt.
+Dieser eignet sich sehr gut für den Einsatz von Regressions- bzw. Unit-Tests.
 Die entsprechenden JUnit-Testcases sind unter src/frantarye/test zu finden.
-Diese Tests überprüfen das Verhalten der Applikation bei falschen, sowie bei korrekten Eingaben. (Fehlermeldung inkludiert)
+Diese Tests überprüfen das Verhalten der Applikation bei falschen, sowie bei korrekten Eingaben. (Fehlermeldungen inkludiert)
 
 \subsubsection{jar-fileaufruf}
 Als letztes wird das Verhalten des jar-Files bei falschen Eingabeparametern getestet.
