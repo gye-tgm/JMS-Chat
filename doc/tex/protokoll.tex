@@ -112,6 +112,29 @@ Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt un
     \end{tabular}
 \end{description}
 
+\newpage
+
+\section{Designüberlegungen}
+Zur Aufgabenstellung wurde eine Demoimplementierung zum Senden einer Message über JMS mitgeliefert. Diese hatte folgenden Aufbau:
+
+\includegraphics[width=5in]{pic/Ausgangslage_UML.png}
+
+Es wurde sehr bald entschieden, dass sich dieser Programmaufbau zwar zur Demonstration aber nicht zur vollständigen Implementierung dieser Aufgabenstellung
+eignet. Daher wurde folgender Aufbau geplant.
+
+\includegraphics[width=5in]{pic/DesignPlanung_UML.png}
+
+Als startbare Hauptklasse wurde der JMSUser ausgewählt. Dieser besitzt einen Chat, sowie eine Mailbox. Diese zwei Komponenten implementieren jeweils das
+Senden und Empfangen von Chatnachrichten bzw. Mails. Der User kann damit auf beide Funktionalitäten gleichzeitig zugreifen. Außerdem wurde entschieden aus
+Übersichtsgründen, die Syntaxüberprüfung von Eingaben in der Chatapplikation aus dem JMSUser in eine externe Klasse (SyntaxChecker) auszulagen, da diese
+somit viel einfacher mit Regressionstests getestet werden kann.
+Dies ist ein CMD-Applikation. Obwohl diese für ein solches (userfreundliches Programm) nicht die beste Lösung ist, wurde es trotzdem so implementiert, da
+dies viel Zeit spart und diese Aufgabe sowieso nur zur Demonstration der JMS-Technologie und nicht als Userapplikation gedacht ist.
+
+\end{Designüberlegungen}
+
+\newpage
+
 \section{Installation}
 Herunterladen der Installationsdateien mit Hilfe von wget.
 \begin{lstlisting}
@@ -290,6 +313,8 @@ Erwartet: Alle Nachrichten kommen mit Sendernamen auf allen 3 Hosts an.
 
 Ergebnis: Wie erwartet, sind alle Nachrichten auf allen 3 verschiedenen Hostsystemen im korrekten Format angekommen.
 
+\newpage
+
 \subsubsection{Mail}
 Zum Testen des Mailservices verbinden sich erneut 3 Clients im Chatroom 'Kryptos' mit dem ActiveMQ-Server.
 Nun senden verschiedene Clients verschiedene Nachrichten an den 1. auf Windows befindenden Host.
@@ -318,8 +343,10 @@ Erwartet: Alle Nachrichten landen in der Mailbox des Empfängers. Bei Aufruf von
 \end{center}
 
 Ergebnis: Wie erwartet scheinen alle Nachrichten in der Mailbox des Empfängers auf. Zusätzlich werden diese dauerhaft gespeichert, d.h. wenn die Mailbox erneut
-abgerufen wird, werden trotzdem noch alle bereits vorher gesendeten Nachrichten angezeigt. Dieses Feature ist in der Aufgabenstellung nicht definiert und der
-Testfall wird daher als erfolgreich angesehen.
+abgerufen wird, werden trotzdem noch alle bereits vorher gesendeten Nachrichten angezeigt. Dieses Feature ist auch in richtigen Mailboxen enthalten und ist
+daher kein Fehler.
+
+\newpage
 
 \subsubsection{SyntaxChecker}
 Der SyntaxChecker, also das Tools welches bei Eingabe von Kommandos im Chat überprüft, ob es sich um korrekte und wenn ja, um welche Eingabe, handelt,
