@@ -282,9 +282,9 @@ Erwartet: Alle Nachrichten kommen mit Sendernamen auf allen 3 Hosts an.
 
 \begin{center}
   \begin{description}
-    \item[Konsole 1] \hfill \\ \includegraphics[width=5in]{pic/chat_user1.png}
-    \item[Konsole 2] \hfill \\ \includegraphics[width=5in]{pic/chat_user2.png}
-    \item[Konsole 3] \hfill  \\ \includegraphics[width=5in]{pic/chat_user3.png}
+    \item[user1] \hfill \\ \includegraphics[width=5in]{pic/chat_user1.png}
+    \item[user2] \hfill \\ \includegraphics[width=5in]{pic/chat_user2.png}
+    \item[user3] \hfill  \\ \includegraphics[width=5in]{pic/chat_user3.png}
   \end{description}
 \end{center}
 
@@ -295,12 +295,25 @@ Zum Testen des Mailservices verbinden sich erneut 3 Clients im Chatroom 'Kryptos
 Nun senden verschiedene Clients verschiedene Nachrichten an den 1. auf Windows befindenden Host.
 Dieser ruft dann seine Mailbox ab und liest damit alle empfangenen Nachrichten aus.
 
+Ablauf:
+\begin{itemize}
+	\item user1, user2 und user3 verbinden sich erneut mit 'ChatRoom1'
+	\item user2: MAIL 'user1IP' Dear user1, I'm just testing the brandnew JMS Mailservice ;)
+	\item user2: Hey user1, check out your mails!
+	\item user1: MAILBOX
+	\item user1: Received it!
+	\item user3: MAIL 'user1IP' a test mail from me ;)
+	\item user1: MAILBOX
+	\item user1: It works!
+\end{itemize}
+
+Erwartet: Alle Nachrichten landen in der Mailbox des Empfängers. Bei Aufruf von MAILBOX werden diese in korrekter Reihenfolge ausgelesen.
 
 \begin{center}
 \begin{description}
-\item[Konsole 1] \hfill \\   \includegraphics[width=6in]{pic/mail_user1.png}
-\item[Konsole 2] \hfill \\   \includegraphics[width=6in]{pic/mail_user2.png}
-\item[Konsole 3] \hfill \\   \includegraphics[width=6in]{pic/mail_user3.png}
+\item[user1] \hfill \\   \includegraphics[width=6in]{pic/mail_user1.png}
+\item[user2] \hfill \\   \includegraphics[width=6in]{pic/mail_user2.png}
+\item[user3] \hfill \\   \includegraphics[width=6in]{pic/mail_user3.png}
 \end{description}
 \end{center}
 
@@ -330,6 +343,7 @@ Die durchgeführten Tests sind in den folgenden Screenshots zu sehen.
     \includegraphics[width=6in]{pic/badhost.png}
   \end{description}
 \end{center}
+
 \newpage
 
 \end{document}
