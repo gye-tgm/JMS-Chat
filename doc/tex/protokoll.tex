@@ -175,6 +175,7 @@ können. Diese aber manuell ausgelesen werden müssen. Das Auslesen geschieht au
 
 Im folgenden Abschnitt ist die Implementierung der Verwendung einer JMS-Queue mithilfe von Code-Snippets erläutert.
 \section{Aufgetretene Probleme}
+
 \subsection{Installation}
 Für das Debian-Image muss eine Änderung durchgeführt werden, damit Apache Active MQ gestartet werden kann.
 Öffnen Sie die Datei bin/activemq mit einem Editor Ihrer Wahl 
@@ -185,9 +186,15 @@ Ersetzen Sie diese Zeile mit:
 \subsection{IP Addresse}
 Man kann mittels ActiveMQ nicht direkt die IP Addressen von dem Sender herausfinden. Siehe 
 %TODO
-Deshalbe wurde beschlossen, dass der User sie selber angibt, indem er das Programm das zu verwendende Interface übergibt.
+Deshalbe wurde beschlossen, dass der User sie selber angibt, indem er das Programm das zu verwendende Interface übergibt. Von dem Interface wird die IP-Adresse ermittelt und anschließend zum Austauschen von Nachrichten übernommen.
 
 \section{Testing}
+\subsection{System Test}
+
+\subsubsection{Chat}
+
+\subsubsection{Mail}
+\subsubsection{Syntax Checker}
 
 \section{Resultate und Niederlagen}
 
