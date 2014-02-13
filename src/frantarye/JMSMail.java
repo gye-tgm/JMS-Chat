@@ -78,7 +78,7 @@ public class JMSMail {
 			}
 		} catch(JMSException e){
 			System.err.println("Could not retrieve the mails!");
-			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 		}
 		
 		return mails;
@@ -100,7 +100,7 @@ public class JMSMail {
 			browser = session.createBrowser(queue);
 		} catch(JMSException e){
 			System.err.println("Could not connect to the mailbox!");
-			System.err.println(e.getMessage());
+			// System.err.println(e.getMessage());
 		}
 	}
 	/**

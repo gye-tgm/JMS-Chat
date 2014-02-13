@@ -72,7 +72,9 @@ public class JMSUser extends Thread {
 		try {
 			chat.connect();
 		} catch (JMSException e1) {
-			e1.printStackTrace();
+			System.out.println("Could not connect to the server");
+			System.exit(1);
+			// e1.printStackTrace();
 		}
 		
 		chat.startReceiving(); // Start listening

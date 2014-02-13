@@ -65,10 +65,10 @@ Gruppenarbeit: Die Arbeit ist in einer 2er-Gruppe zu lösen und über das Netzwe
 \begin{itemize}
 \item http://activemq.apache.org/index.html
 \item http://www.academictutorials.com/jms/jms-introduction.asp
-\item http://docs.oracle.com/javaee/1.4/tutorial/doc/JMS.html#wp84181
+\item http://docs.oracle.com/javaee/1.4/tutorial/doc/JMS.html\#wp84181
 \item http://www.openlogic.com/wazi/bid/188010/How-to-Get-Started-with-ActiveMQ
 \item http://jmsexample.zcage.com/index2.html
-\item http://www.onjava.com/pub/a/onjava/excerpt/jms_ch2/index.html
+\item http://www.onjava.com/pub/a/onjava/excerpt/jms\_ch2/index.html
 \item http://www.oracle.com/technetwork/systems/middleware/jms-basics-jsp-135286.html
 \item http://java.sun.com/developer/technicalArticles/Ecommerce/jms
 \end{itemize}
@@ -113,11 +113,20 @@ Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt un
 \end{description}
 
 \section{Installation}
-\begin{enumerate}
-\item Herunterladen der Installationsdateien[1].
-\item Entpacken der Installationsdateien mit unzip
-\item Ändern der Rechte von bin/activemq mit chmod u+x, damit die Datei ausführbar wird.
-\end{enumerate}
+Herunterladen der Installationsdateien mit Hilfe von wget.
+\begin{lstlisting}
+ wget http://www.eu.apache.org/dist/activemq/apache-activemq/5.7.0/apache-activemq-5.7.0-bin.tar.gz
+\end{lstlisting}
+Entpacken der Installationsdateien mit
+\begin{lstlisting}
+ tar xf apache-activemq-5.7.0-bin.tar.gz
+\end{lstlisting}
+Falls benötigt - ändern der Ausführungsrechte von bin/activemq mit chmod u+x, damit die Datei ausführbar wird.
+Danach das Binary File starten mit
+\begin{lstlisting}
+bin/activemq start
+\end{lstlisting}
+
 \newpage
 
 \section{Neue Technologien}
@@ -131,7 +140,7 @@ D.h. alle Systeme kommunizieren nur über Nachrichten (Objekte) welche über die
 Genauere Informationen über die Implementierung sind in den folgenden zwei Abschnitten zu finden.
 
 \subsection{JMS-Topic}
-Ein JMS-Topic ist, ähnlich wie Chat-Room, ein auf der MOM liegender Ort in den Nachrichten gesendet werden können. Ein JMS-Teilnehmer kann einem Topic
+Ein JMS-Topic ist, ähnlich wie Chat-Room, ein auf der MOM liegender Ort in den Nachrichten gesendet werden können. Ein JMS-Teilnehmer kann ein Topic
 subscriben und erhält dadurch alle Nachrichten, die an das Topic gesendet werden (auch die eigenen).
 
 Im folgenden Abschnitt ist die Implementierung der Verwendung eines JMS-Topics mithilfe von Code-Snippets erläutert.
@@ -162,8 +171,8 @@ consumer = session.createConsumer(destination);
 \end{lstlisting}
 
 Wie oben bereits erwähnt wird nun durch die Session ein Topic, sofern es nicht bereits existiert, erstellt.
-Im Anschluss werden noch ein Nachrichtensender (producer), welcher versende, die nur temporär auf dem Server gespeicher werden und ein Nachrichtenempfägner,
-welcher einem Topic subscribt und dementsprechend allen in diesem Topic eintreffende Nachrichten empfängt.
+Im Anschluss werden noch ein Nachrichtensender (producer), welcher Nachrichten versendet, die nur temporär auf dem Server gespeichert werden und ein Nachrichtenempfänger,
+welcher ein Topic subscribt und dementsprechend allen in diesem Topic eintreffende Nachrichten empfängt, erstellt.
 
 \begin{lstlisting}[language=Java]
 TextMessage message = (TextMessage)consumer.receive();
@@ -171,8 +180,8 @@ System.out.println(message.getText());
 message.acknowledge();
 \end{lstlisting}
 
-Nun kann druch den Consumer eine Nachricht empfagen werden. Diese Methode blockiert solange bis sie eine Nachricht erhält. Aus dieser Nachricht kann im
-Anschluss nun zum Beispiel der Textinhalt ausgelesen werden. Um dem Server zu bestätigen, dass diese Nachricht erhalten wurden und sie nicht nochmals gesendet
+Nun kann durch den Consumer eine Nachricht empfagen werden. Diese Methode blockiert solange bis sie eine Nachricht erhält. Aus dieser Nachricht kann im
+Anschluss nun zum Beispiel der Textinhalt ausgelesen werden. Um dem Server zu bestätigen, dass diese Nachricht erhalten wurde und sie nicht nochmals gesendet
 werden muss, wird abschließend noch acknowledge() aufgerufen.
 
 \begin{lstlisting}[language=Java]
@@ -240,7 +249,9 @@ ausgelesen werden.
 \newpage
 
 \section{Aufgetretene Probleme}
+
 \subsection{Installation}
+
 Für das Debian-Image muss eine Änderung durchgeführt werden, damit Apache Active MQ gestartet werden kann.
 Öffnen Sie die Datei bin/activemq mit einem Editor Ihrer Wahl 
 Suchen Sie nach folgender Zeile
@@ -250,44 +261,37 @@ Ersetzen Sie diese Zeile mit:
 \subsection{IP Addresse}
 Man kann mittels ActiveMQ nicht direkt die IP Addressen von dem Sender herausfinden. Siehe 
 %TODO
-Deshalbe wurde beschlossen, dass der User sie selber angibt, indem er das Programm das zu verwendende Interface übergibt.
+Deshalbe wurde beschlossen, dass der User sie selber angibt, indem er das Programm das zu verwendende Interface übergibt. Von dem Interface wird die IP-Adresse ermittelt und anschließend zum Austauschen von Nachrichten übernommen.
 
 \newpage
 
 \section{Testing}
+
 \subsection{Systemtest}
 Sämtliche Systemtests wurden über das Netzwerk durchgeführt.
-Folgende Netzwerkkonfiguration wird verwendet:
-
-\begin{itemize}
-	\item ActiveMQServer: Linux-basierter Server (externer Server)
-	\item user1: Windows Host (HostOS auf PC1)
-	\item user2: Linux Host (HostOS auf PC2)
-	\item user3: Linux Host (OS in VM auf PC2 mit Bridged direkt an das Netzwerk angeschlossen)
-\end
+Als Testumgebung wird eine ActiveMQ auf einem in einer virtuellen Maschine laufenden Debian-Server eingesetzt. 3 Hosts (1 Debian + 2 Windows) verbinden sich
+mit diesem Server. Die Hostmaschinen und der Server sind nur über das Netzwerk verbunden.
 
 In den folgenden Abschnitten sind die einzelnen Testcases mit Ergebnissen detailliert dokumentiert.
 
 \subsubsection{Chat}
+Zum Testen des Chats verbinden sich 3 Clients im Chatroom 'Kryptos' mit dem JMS-Server.
+Anschließend werden Nachrichten von allen 3 Seiten ausgetauscht.
 
-Ablauf:
-\begin{itemize}
-	\item user1, user2 und user3 verbinden sich mit 'ChatRoom1'
-	\item user1: Hello everyone!
-	\item user2: Hi user1
-	\item user3: Good evening user1. How are you?
-	\item user1: I'm fine, thanks.
-\end
+Erwartet: Alle Nachrichten kommen mit Sendernamen auf allen 3 Hosts an.
 
-Erwartet: Alle Nachrichten kommen mit Sendernamen und SenderIP auf allen 3 unterschiedlichen Hosts (auch Sender) in der richtigen Reihenfolge an.
-
-\includegraphics{chat_user1.PNG}
-\includegraphics{chat_user2.PNG}
-\includegraphics{chat_user3.PNG}
+\begin{center}
+  \includegraphics[width=5in]{pic/chat_user1.png}
+  \includegraphics[width=5in]{pic/chat_user2.png}
+  \includegraphics[width=5in]{pic/chat_user3.png}
+\end{center}
 
 Ergebnis: Wie erwartet, sind alle Nachrichten auf allen 3 verschiedenen Hostsystemen im korrekten Format angekommen.
 
 \subsubsection{Mail}
+Zum Testen des Mailservices verbinden sich erneut 3 Clients im Chatroom 'Kryptos' mit dem ActiveMQ-Server.
+Nun senden verschiedene Clients verschiedene Nachrichten an den 1. auf Windows befindenden Host.
+Dieser ruft dann seine Mailbox ab und liest damit alle empfangenen Nachrichten aus.
 
 Ablauf:
 \begin{itemize}
@@ -303,24 +307,31 @@ Ablauf:
 
 Erwartet: Alle Nachrichten landen in der Mailbox des Empfängers. Bei Aufruf von MAILBOX werden diese in korrekter Reihenfolge ausgelesen.
 
-\includegraphics{mail_user1.PNG}
-\includegraphics{mail_user2.PNG}
-\includegraphics{mail_user3.PNG}
+\begin{center}
+  \includegraphics[width=6in]{pic/mail_user1.png}
+  \includegraphics[width=6in]{pic/mail_user2.png}
+  \includegraphics[width=6in]{pic/mail_user3.png}
+\end{center}
+
+Erwartet: Alle Nachrichten befinden sich in der Mailbox des Empfängers.
 
 Ergebnis: Wie erwartet scheinen alle Nachrichten in der Mailbox des Empfängers auf. Zusätzlich werden diese dauerhaft gespeichert, d.h. wenn die Mailbox erneut
-abgerufen wird, werden trotzdem noch alle bereits vorher gesendeten Nachrichten angezeigt. Dieses Feature entspricht einer normalen Mailbox und ist daher
-gewollt.
+abgerufen wird, werden trotzdem noch alle bereits vorher gesendeten Nachrichten angezeigt. Dieses Feature ist in der Aufgabenstellung nicht definiert und der
+Testfall wird daher als erfolgreich angesehen.
 
 \subsubsection{SyntaxChecker}
-Der SyntaxChecker ist das Tools welches bei Eingabe von Kommandos im Chat überprüft, ob es sich um korrekte und wenn ja, um welche Eingabe, handelt.
-Dieser eignet sich sehr gut für den Einsatz von Regressions- bzw. Unit-Tests.
+Der SyntaxChecker, also das Tools welches bei Eingabe von Kommandos im Chat überprüft, ob es sich um korrekte und wenn ja, um welche Eingabe, handelt,
+eignet sich sehr gut für den Einsatz von Regressions- bzw. Unit-Tests.
 Die entsprechenden JUnit-Testcases sind unter src/frantarye/test zu finden.
-Diese Tests überprüfen das Verhalten der Applikation bei falschen, sowie bei korrekten Eingaben. (Fehlermeldungen inkludiert)
+Diese Tests überprüfen das Verhalten der Applikation bei falschen, sowie bei korrekten Eingaben. (Fehlermeldung inkludiert)
 
 \subsubsection{jar-fileaufruf}
 Als letztes wird das Verhalten des jar-Files bei falschen Eingabeparametern getestet.
 Die durchgeführten Tests sind in den folgenden Screenshots zu sehen.
-
-%	TODO: Add Screenshots!
+\begin{center}
+  \includegraphics[width=6in]{pic/help.png}
+  \includegraphics[width=6in]{pic/wrongiface.png}
+  \includegraphics[width=6in]{pic/badhost.png}
+\end{center}
 
 \end{document}
