@@ -4,6 +4,7 @@
 \usepackage{listings}             % Include the listings-package for c++,java,idl
 \usepackage[margin=0.75in]{geometry}
 \usepackage{graphicx}
+\usepackage{url}
 % \usepackage[ngerman]{babel}
 
 \title{JMS-Chat}
@@ -96,8 +97,9 @@ Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt un
     Task & Schätzung & Tatsächlich \\ \hline
     Implementierung JMSChat & 1.5h & 0.75h \\ \hline
     Implementierung JMSMail & 1.5h & 1.5h \\ \hline
+    Protokoll & 4h & 4h \\ \hline
     \hline
-    Gesamt & 3h & 2.75h \\ \hline
+    Gesamt & 7h & 6.75h \\ \hline
   \end{tabular}
 
 \item[Ye] \hfill \\
@@ -107,8 +109,9 @@ Installation Message Broker Apache ActiveMQ wurde im Unterricht durchgeführt un
       SyntaxChecker Implementierung & 0.75h & 0.25h \\ \hline
       SyntaxChecker Test & 0.5h & 0.5h \\ \hline
       JMS-User Implementierung & 2h & 0.5h \\ \hline
+      Protokoll & 5h & 4h \\ \hline
       \hline
-      Gesamt & 3.25h & 1.25h \\ \hline
+      Gesamt & 8.25h & 5.25h \\ \hline
     \end{tabular}
 \end{description}
 
@@ -136,7 +139,7 @@ dies viel Zeit spart und diese Aufgabe sowieso nur zur Demonstration der JMS-Tec
 \newpage
 
 \section{Installation}
-Herunterladen der Installationsdateien mit Hilfe von wget.
+Herunterladen der Installationsdateien von \cite{activemqdownload} mit Hilfe von wget.
 \begin{lstlisting}
  wget http://www.eu.apache.org/dist/activemq/apache-activemq/5.7.0/apache-activemq-5.7.0-bin.tar.gz
 \end{lstlisting}
@@ -150,11 +153,13 @@ Danach das Binary File starten mit
 bin/activemq start
 \end{lstlisting}
 
+Man kann mithilfe von ``bin/activemq status'' überprüfen, ob activemq korrekt gestartet wurde.
+
 \newpage
 
 \section{Neue Technologien}
 \subsection{Grundlagen}
-Das Java Message Service (JMS) ist eine auf Java basierende Message Oriented Middleware (MOM) zum Versenden von Nachrichten zwischen 2 oder mehr Systemen.
+Das Java Message Service (JMS) \cite{activemqtut1} ist eine auf Java basierende Message Oriented Middleware (MOM) zum Versenden von Nachrichten zwischen 2 oder mehr Systemen.
 Grundlegend funtkioniert dies folgendermaßen:
 Auf der MOM (meist auf einem Server liegend) können Topics und Queues angelegt werden.
 In diese können JMS-Teilnehmer Nachrichten versenden bzw. Nachrichten von ihnen empfangen/auslesen. (sofern entsprechende Zugriffsrechte vorhanden)
@@ -246,7 +251,7 @@ producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 \end{lstlisting}
 
 Durch eine Session kann mit Übergabe einer Zielqueue QueueBrowser erstellt werden. Durch diesen kann der Inhalt einer Queue ausgelesen werden.
-Äuivalent funktioniert das Erstellen eines Producers, also einer JMS-Komponente, die es ermöglicht Nachrichten an eine Queue zu senden.
+Äquivalent funktioniert das Erstellen eines Producers, also einer JMS-Komponente, die es ermöglicht Nachrichten an eine Queue zu senden.
 
 \begin{lstlisting}[language=Java]
 TextMessage msg = session.createTextMessage(message);
@@ -349,7 +354,7 @@ daher kein Fehler.
 \newpage
 
 \subsubsection{SyntaxChecker}
-Der SyntaxChecker, also das Tools welches bei Eingabe von Kommandos im Chat überprüft, ob es sich um korrekte und wenn ja, um welche Eingabe, handelt,
+Der SyntaxChecker, also das Tool welches bei Eingabe von Kommandos im Chat überprüft, ob es sich um korrekte und wenn ja, um welche Eingabe, handelt,
 eignet sich sehr gut für den Einsatz von Regressions- bzw. Unit-Tests.
 Die entsprechenden JUnit-Testcases sind unter src/frantarye/test zu finden.
 Diese Tests überprüfen das Verhalten der Applikation bei falschen, sowie bei korrekten Eingaben. (Fehlermeldung inkludiert)
@@ -370,5 +375,8 @@ Die durchgeführten Tests sind in den folgenden Screenshots zu sehen.
 \end{center}
 
 \newpage
+
+\bibliography{protokoll}{}
+\bibliographystyle{plain}
 
 \end{document}
