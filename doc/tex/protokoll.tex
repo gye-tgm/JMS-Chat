@@ -281,9 +281,11 @@ Anschließend werden Nachrichten von allen 3 Seiten ausgetauscht.
 Erwartet: Alle Nachrichten kommen mit Sendernamen auf allen 3 Hosts an.
 
 \begin{center}
-  \includegraphics[width=5in]{pic/chat_user1.png}
-  \includegraphics[width=5in]{pic/chat_user2.png}
-  \includegraphics[width=5in]{pic/chat_user3.png}
+  \begin{description}
+    \item[Konsole 1] \hfill \\ \includegraphics[width=5in]{pic/chat_user1.png}
+    \item[Konsole 2] \hfill \\ \includegraphics[width=5in]{pic/chat_user2.png}
+    \item[Konsole 3] \hfill  \\ \includegraphics[width=5in]{pic/chat_user3.png}
+  \end{description}
 \end{center}
 
 Ergebnis: Wie erwartet, sind alle Nachrichten auf allen 3 verschiedenen Hostsystemen im korrekten Format angekommen.
@@ -295,9 +297,11 @@ Dieser ruft dann seine Mailbox ab und liest damit alle empfangenen Nachrichten a
 
 
 \begin{center}
-  \includegraphics[width=6in]{pic/mail_user1.png}
-  \includegraphics[width=6in]{pic/mail_user2.png}
-  \includegraphics[width=6in]{pic/mail_user3.png}
+\begin{description}
+\item[Konsole 1] \hfill \\   \includegraphics[width=6in]{pic/mail_user1.png}
+\item[Konsole 2] \hfill \\   \includegraphics[width=6in]{pic/mail_user2.png}
+\item[Konsole 3] \hfill \\   \includegraphics[width=6in]{pic/mail_user3.png}
+\end{description}
 \end{center}
 
 Erwartet: Alle Nachrichten befinden sich in der Mailbox des Empfängers.
@@ -315,12 +319,17 @@ Diese Tests überprüfen das Verhalten der Applikation bei falschen, sowie bei k
 \subsubsection{jar-fileaufruf}
 Als letztes wird das Verhalten des jar-Files bei falschen Eingabeparametern getestet.
 Die durchgeführten Tests sind in den folgenden Screenshots zu sehen.
-\begin{center}
-  \includegraphics[width=6in]{pic/help.png}
-  \includegraphics[width=6in]{pic/wrongiface.png}
-  \includegraphics[width=6in]{pic/badhost.png}
-\end{center}
 
+\begin{center}
+  \begin{description}
+  \item[Hilfeaufruf] \hfill \\
+    \includegraphics[width=6in]{pic/help.png}
+  \item[Falsches Interface angegeben] \hfill \\
+    \includegraphics[width=6in]{pic/wrongiface.png}
+  \item[Falscher Hostname] \hfill \\
+    \includegraphics[width=6in]{pic/badhost.png}
+  \end{description}
+\end{center}
 \newpage
 
 \end{document}
