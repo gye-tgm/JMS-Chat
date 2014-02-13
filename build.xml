@@ -53,4 +53,16 @@
   <target name="clean-doc">
     <delete dir="${doc.dir}"/>
   </target>
+ 
+
+  <target name="create-jar">
+    <jar destfile="lib/JMS.jar" basedir=".">
+      <fileset dir="${class.dir}"/>
+      <zipfileset includes="**/*.class" src="lib/activemq-all-5.8.0.jar"/>
+      <manifest>
+	<attribute name="Main-Class"
+		   value="frantarye.JMSUser"/>
+      </manifest>
+    </jar>
+  </target>
 </project>
