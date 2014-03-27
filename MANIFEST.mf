@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Rsrc-Class-Path: ./ activemq-all-5.8.0.jar junit.jar 
+Class-Path: .
+Rsrc-Main-Class: frantarye.JMSUser
+
